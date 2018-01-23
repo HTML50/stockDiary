@@ -47,6 +47,49 @@
     background: #f5f5f5;
     cursor: pointer;
 }
+
+#mask{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+form#input{
+    width: 50%;
+    height: 50%;
+    box-shadow: 1px 7px 20px -8px #000;
+    background: #fff;
+    margin: auto;
+    padding: 30px;
+}
+
+.ab-center{
+    margin: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#closeBtn{
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    display: block;
+    background: #e8e8e8;
+    padding: 10px;
+    border-radius: 5px;
+    color: #2f2f2f;
+    height: 20px;
+    width: 20px;
+    line-height: 23px;
+    font-size: 27px;
+    cursor: pointer;
+    user-select: none;
+}
 </style>
 
 <head>
@@ -72,12 +115,40 @@
         </div>
         <div id="memo" class="bottom"></div>
     </div>
+    <div id="mask" class="ab-center">
+        <form id="input" class="ab-center">
+        <div id="closeBtn">❌</div>
+        <p>
+        <label>日期：</label><input type="text" id="date" name="date" required>
+        <label>时间：</label><input type="text" id="newTime" name="time" required>
+        </p>
+        <p>
+        <label>代码：</label><input type="number" id="stockID" name="stockID" required>
+        <label>名称：</label><input type="text" id="stockName" name="name" required>
+        </p>
+        <p>
+        <label>数量：</label><input type="number" step="100" id="stockAmount" name="amount" required>
+        <label>价格：</label><input type="number" name="price" step="0.01" required>
+        </p>
+        <p><label>操作：</label>
+        <select type="text" name="operation" required>
+            <option>卖出</option>
+            <option>买入</option>
+        </select></p>
+        <p><div>
+            <textarea id="markdown" name="memo" required></textarea>
+        </div>
+        <button type="submit">提交</button>
+        </form>
+    </div>
     <script src="./temp/data"></script>
     <script src="./temp/notes"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
     <script>
     'use strict';
 
+
+    //初始数据
     let timeline = [],
         price = [],
         bgColor = [];
@@ -102,6 +173,8 @@
         }]
     };
 
+
+    //显示Memo
     function showMemo(index){
         if(document.getElementById('notes').style.display === '')
             document.getElementById('notes').style.display = 'block'
@@ -120,6 +193,22 @@
         }
     }
 
+
+    //根据代码查询股票名称
+    stockID.oninput = function(){
+        if(stockID.value.length === 6){
+           let xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://127.0.0.1:8080/?id='+stockID.value);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    stockName.value = xhr.response;
+                }
+            };
+            xhr.send();
+        }
+    }
+
+    //页面准备就绪
     window.onload = function() {
         var ctx = document.getElementById("canvas").getContext("2d");
 
@@ -147,10 +236,42 @@
             }
         };
 
-         document.getElementById('new').onclick = function() {
-            console.log(1)
+
+        //新建记录
+        document.getElementById('new').onclick = function() {
+            mask.style.display= 'block';
+
+            var now = new Date();
+
+
+
+            var month = now.getMonth()<9 ? '0'+(now.getMonth()+1):(now.getMonth()+1),
+            day = now.getDate()<10?'0'+now.getDate():now.getDate(),
+            hour = now.getHours()<10?'0'+now.getHours():now.getHours(),
+            min = now.getMinutes()<10?'0'+now.getMinutes():now.getMinutes(),
+            sec = now.getSeconds()<10?'0'+now.getSeconds():now.getSeconds(),
+            dateStr = ''+now.getFullYear()+month+day,
+            timeStr = hour+':'+min+':'+sec;
+
+            date.value = dateStr;
+            newTime.value = timeStr;
+
+
+            mask.onclick = function() {
+                mask.style.display= 'none';
+            }
+            closeBtn.onclick = function() {
+                mask.style.display= 'none';
+            }            
+
+
+            input.onclick = function(e){
+                e.stopPropagation();
+            }
         }
 
+
+        //总利润、均价
         document.getElementById("total").innerHTML = total;
         document.getElementById("avg").innerHTML = avg;
 
