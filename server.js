@@ -33,13 +33,39 @@ http.createServer(function(req, res){
   })
 
 
+
+ //涉及买入，更新holdings
+    if(params.query.operation === '买入'){
+
+      let id = params.query.stockID,
+      value = params.query.amount * params.query.price;
+      holdings[id] = value;
+
+    //重写holding，将Object转为字符串writeTemp
+    let writeTemp = "";
+
+    for (let id in holdings) {
+      writeTemp += "\n" + id + "|" + stockDate.data[id] + "|" + params.query.amount + "|" + holdings[id] ;
+    }
+
+
+
+    //writeTemp写入holdings文件
+    writeTemp = writeTemp.slice(1,writeTemp.length);//去掉上面规定格式的第一行的行首换行
+    fs.writeFile('./data/holding',writeTemp,{encoding:'utf-8',mode:'0666'},function(err){
+       if(err) console.log(err)
+    })
+
+    //更新静态数据文件temp
+    render();
+    }
+
       //涉及卖出，更新data
-      if(params.query.operation === '卖出'){
+    if(params.query.operation === '卖出'){
 
       let id = params.query.stockID,
       value = params.query.amount * params.query.price - holdings[id];
       delete holdings[id]
-      console.log(holdings)
 
     //重写holding
     let writeTemp = "";
@@ -57,12 +83,15 @@ http.createServer(function(req, res){
 
     writeTemp = params.query.date + "|" + value;
 
-    fs.writeFile('./data/data','\n'+writeTemp,{encoding:'utf-8',mode:'0666',flag:'a'},function(err){
-       if(err) console.log(err)
-    })
 
+    new Promise(function(resolve,reject){
+          fs.writeFile('./data/data','\n'+writeTemp,{encoding:'utf-8',mode:'0666',flag:'a'},function(err){
+       if(err) console.log(err)
+        else resolve()
+      })
+    }).then(render);
     //更新静态数据文件temp
-    render();
+
     }
 
 
@@ -98,35 +127,16 @@ cmd.exec("google-chrome http://127.0.0.1:8080/")
 
 
 
-
-
 function render(){
-
-//读取买卖盈亏data
-let dataflow= fs.readFileSync('./data/data','utf8').split('\n'), dataToBeWritten = 'var data = {\n';
-
-for(v of dataflow){
-  let arr =  v.split('|'); 
-     date = arr[0],
-      price = arr[1];
-      dataToBeWritten+= date+":"+price+",\n";
-}
-
-dataToBeWritten = dataToBeWritten.slice(0,dataToBeWritten.lastIndexOf(','))
-dataToBeWritten += '\n}'
-fs.writeFile('./temp/data',dataToBeWritten,{encoding:'utf-8',mode:'0666'},function(err){
-   if(err) console.log(err)
-})
-
-
-
 //读取当前持股holding
-dataflow= fs.readFileSync('./data/holding','utf8').split('\n');
+let dataflow= fs.readFileSync('./data/holding','utf8').split('\n');
 for(v of dataflow){
-  let arr =  v.split('|'); 
-     id = arr[0],
+  if(v){
+      let arr =  v.split('|'); 
+      id = arr[0],
       value= arr[3];
       holdings[id] = value;
+    }
 }
 
 
@@ -161,4 +171,28 @@ dataToBeWritten += '\n]'
 fs.writeFile('./temp/notes',dataToBeWritten,{encoding:'utf-8',mode:'0666'},function(err){
    if(err) console.log(err)
 })
+
+//读取买卖盈亏data
+dataflow= fs.readFileSync('./data/data','utf8').split('\n'), dataToBeWritten = 'var data = {\n';
+
+for(v of dataflow){
+  let arr =  v.split('|'); 
+     date = arr[0],
+      price = arr[1];
+      dataToBeWritten+= date+":"+price+",\n";
+      
+}
+
+dataToBeWritten = dataToBeWritten.slice(0,dataToBeWritten.lastIndexOf(','))
+dataToBeWritten += '\n}'
+
+console.log(dataToBeWritten)
+
+fs.writeFile('./temp/data',dataToBeWritten,{encoding:'utf-8',mode:'0666'},function(err){
+   if(err) console.log(err)
+})
+
+
+
+
 }
