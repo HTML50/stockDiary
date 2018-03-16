@@ -107,12 +107,12 @@ form#input{
     <div id="notes">
         <div class="top">
             <div id="time"></div>
-            <div id="operation"></div>
             <div id="id"></div>
             <div id="name"></div>
             <div id="price"></div>
             <div id="amount"></div>
         </div>
+        <div id="buyMemo" required></div>
         <div id="memo" class="bottom"></div>
     </div>
     <div id="mask" class="ab-center">
@@ -136,7 +136,7 @@ form#input{
             <option>买入</option>
         </select></p>
         <p><div>
-            <textarea id="markdown" name="memo" required></textarea>
+            <textarea name="memo" required></textarea>
         </div>
         <button type="submit">提交</button>
         </form>
@@ -145,9 +145,7 @@ form#input{
     <script src="./temp/notes"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
     <script>
-    'use strict';
-
-
+    'use strict'
     //初始数据
     let timeline = [],
         price = [],
@@ -179,16 +177,25 @@ form#input{
         if(document.getElementById('notes').style.display === '')
             document.getElementById('notes').style.display = 'block'
 
+
+          //notes是temp/notes文件中定义的数组
         for(let i in notes){
-            if(timeline[index] === notes[i].date){
+           if(timeline[index] === notes[i].date && notes[i].operation==='卖出'){
+                
                 memo.innerHTML = notes[i].memo;
                 time.innerHTML = notes[i].date +" "+notes[i].time;
                 document.getElementById('id').innerHTML = notes[i].id;
                 document.getElementById('name').innerHTML = notes[i].name;
                 document.getElementById('price').innerHTML = "价格: "+notes[i].price;
                 amount.innerHTML = "数量: "+notes[i].amount;
-                operation.innerHTML = notes[i].operation;
-                return;
+
+                for(let j=i;j>0;j--){
+                    if(notes[j].id === notes[i].id && notes[j].operation==='买入'){
+                         buyMemo.innerHTML = notes[j].memo;
+                         return;
+                    }
+                }
+
             }
         }
     }
@@ -214,7 +221,7 @@ form#input{
 
         //生成图表
         Chart.defaults.global.defaultFontSize = 16;
-        Chart.defaults.global.hover.intersect = true;
+
         let myChart = new Chart(ctx, {
             type: 'bar',
             data: barChartData,
@@ -275,6 +282,10 @@ form#input{
         document.getElementById("total").innerHTML = total;
         document.getElementById("avg").innerHTML = avg;
 
+
+        if(location.port !== '8080'){
+            document.getElementById('new').style.display = 'none';
+        }
     };
     </script>
 </body>

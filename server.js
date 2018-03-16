@@ -73,9 +73,10 @@ http.createServer(function(req, res) {
             if (holdings[id].amount === params.query.amount) {
                 delete holdings[id]
             } else {
+                //卖出了部分股票
                 holdings[id] = {
                     amount: holdings[id].amount - params.query.amount,
-                    value: -(params.query.amount * params.query.price - holdings[id].value)
+                    value: -(params.query.amount * params.query.price - holdings[id].value/holdings[id].amount*params.query.amount)
                 }
             }
 
@@ -121,8 +122,8 @@ http.createServer(function(req, res) {
             fs.createReadStream('index.html').pipe(res);
         } else {
             fs.stat('.' + params.pathname, function(err, stats) {
-                if (err) {
-                    res.writeHead(404);
+                if (err) 
+{                    res.writeHead(404);
                     res.end();
                     return
                 }
