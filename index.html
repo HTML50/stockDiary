@@ -3,28 +3,42 @@
 <style>
 #notes{
     display: flex;
-    flex-direction:column;
-    border: 1px solid #ccc;
-    flex-direction: column;
-    display: none;
-}
-#notes>div{
-    border: 1px #e2e2e2 solid;
-}
-.top{
-    display: flex;
-    justify-content: space-between;
     align-items: center;
 }
-.top div{
-    line-height: 23px;
-    background: #eaeaea;
-    padding: 10px;      
+
+.background{
+    display: block;
+    width: 200px;
+    /* height: 200px; */
+    position: absolute;
+    opacity: 0.5;
+    left: 0;
+    right: 0;
+    /* top: 0; */
+    margin: auto;
+    /* bottom: 0; */
+    text-align: center;
+    font-size: 60px;
+    z-index: -1;
+    color: #5f5f5f;
 }
 
 
-.bottom{
-    
+.table{
+    width: 50%;
+    height: 200px;
+    padding: 30px;
+}
+
+
+.buyTable{
+    background: #00800059;
+    margin-right: 3px;
+}
+
+
+.sellTable{
+        background: #ff00003d;
 }
 #new {
     position: fixed;
@@ -105,15 +119,25 @@ form#input{
     </div>
     <div id='new'>+</div>
     <div id="notes">
-        <div class="top">
-            <div id="time"></div>
-            <div id="id"></div>
-            <div id="name"></div>
-            <div id="price"></div>
-            <div id="amount"></div>
+
+        <div class="background">
+            <div id="id">600690</div>
+            <div id="name">北大荒</div>
         </div>
-        <div id="buyMemo" required></div>
-        <div id="memo" class="bottom"></div>
+
+
+        <div class="table buyTable">
+          <div id="buyTime">20180404 14:24:03</div>      
+          <div class="buyPrice"><div id="buyPrice">12.74</div><div id="buyAmount">1000</div></div>
+         <div id="buyMemo">突然中美贸易摩擦，全线崩盘。但农业、黄金表现抢眼，于是追高杀入
+</div>
+        </div>
+
+
+        <div class="table sellTable">
+          <div id="sellTime">20180404 14:24:03</div>      
+          <div class="sellPrice"><div id="sellPrice">12.74</div><div id="sellAmount">1000</div></div>
+         <div id="sellMemo">买入当天就被套了。研究了一下企业基本面，不太乐观。想着解套就出手。今天观察，发现主力操盘痕迹明显，就拿到涨停出的。虽然今天贸易摩擦又升级了，但是对这个企业不看好，就不再持有了。</div>
     </div>
     <div id="mask" class="ab-center">
         <form id="input" class="ab-center">
