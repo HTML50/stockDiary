@@ -175,7 +175,7 @@ function render() {
         dataToBeWritten += `{ 
         date:"${date}",
         time:"${time}",
-        id:${id},
+        id:"${id}",
         name:"${name}",
         operation:"${operation}",
         price:${price},

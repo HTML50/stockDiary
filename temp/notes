@@ -2,7 +2,7 @@ var notes = [
 { 
         date:"20171019",
         time:"09:33:12",
-        id:600029,
+        id:"600029",
         name:"南方航空",
         operation:"买入",
         price:8.13,
@@ -12,7 +12,7 @@ var notes = [
 { 
         date:"20171030",
         time:"09:33:12",
-        id:600029,
+        id:"600029",
         name:"南方航空",
         operation:"卖出",
         price:8.69,
@@ -22,7 +22,7 @@ var notes = [
 { 
         date:"20171030",
         time:"09:40:46",
-        id:600795,
+        id:"600795",
         name:"国电电力",
         operation:"买入",
         price:3.41,
@@ -32,7 +32,7 @@ var notes = [
 { 
         date:"20171215",
         time:"14:46:25",
-        id:000725,
+        id:"000725",
         name:"京东方A",
         operation:"买入",
         price:5.54,
@@ -42,7 +42,7 @@ var notes = [
 { 
         date:"20171220",
         time:"14:37:25",
-        id:000725,
+        id:"000725",
         name:"京东方A",
         operation:"卖出",
         price:5.67,
@@ -52,7 +52,7 @@ var notes = [
 { 
         date:"20171225",
         time:"14:28:59",
-        id:600025,
+        id:"600025",
         name:"华能水电",
         operation:"买入",
         price:5.05,
@@ -62,7 +62,7 @@ var notes = [
 { 
         date:"20171226",
         time:"10:43:07",
-        id:600025,
+        id:"600025",
         name:"华能水电",
         operation:"卖出",
         price:5.29,
@@ -72,7 +72,7 @@ var notes = [
 { 
         date:"20171227",
         time:"09:37:47",
-        id:600025,
+        id:"600025",
         name:"华能水电",
         operation:"买入",
         price:5.98,
@@ -82,7 +82,7 @@ var notes = [
 { 
         date:"20171229",
         time:"09:55:25",
-        id:600025,
+        id:"600025",
         name:"华能水电",
         operation:"卖出",
         price:5.29,
@@ -92,7 +92,7 @@ var notes = [
 { 
         date:"20171229",
         time:"10:21:56",
-        id:600460,
+        id:"600460",
         name:"士兰微",
         operation:"买入",
         price:15.21,
@@ -102,7 +102,7 @@ var notes = [
 { 
         date:"20180102",
         time:"14:47:40",
-        id:600460,
+        id:"600460",
         name:"士兰微",
         operation:"卖出",
         price:15.60,
@@ -112,7 +112,7 @@ var notes = [
 { 
         date:"20180103",
         time:"10:10:38",
-        id:600903,
+        id:"600903",
         name:"贵州燃气",
         operation:"买入",
         price:20.01,
@@ -122,7 +122,7 @@ var notes = [
 { 
         date:"20180104",
         time:"09:30:01",
-        id:600903,
+        id:"600903",
         name:"贵州燃气",
         operation:"卖出",
         price:19.73,
@@ -132,7 +132,7 @@ var notes = [
 { 
         date:"20180115",
         time:"09:34:56",
-        id:600690,
+        id:"600690",
         name:"青岛海尔",
         operation:"买入",
         price:22.51,
@@ -142,7 +142,7 @@ var notes = [
 { 
         date:"20180123",
         time:"09:40:30",
-        id:600690,
+        id:"600690",
         name:"青岛海尔",
         operation:"卖出",
         price:22.57,
@@ -152,7 +152,7 @@ var notes = [
 { 
         date:"20180130",
         time:"10:35:57",
-        id:600115,
+        id:"600115",
         name:"东方航空",
         operation:"买入",
         price:8.52,
@@ -162,7 +162,7 @@ var notes = [
 { 
         date:"20180206",
         time:"11:24:03",
-        id:600115,
+        id:"600115",
         name:"东方航空",
         operation:"卖出",
         price:8.74,
@@ -172,7 +172,7 @@ var notes = [
 { 
         date:"20180208",
         time:"10:00:54",
-        id:600690,
+        id:"600690",
         name:"青岛海尔",
         operation:"买入",
         price:19.62,
@@ -182,7 +182,7 @@ var notes = [
 { 
         date:"20180223",
         time:"14:17:58",
-        id:600690,
+        id:"600690",
         name:"青岛海尔",
         operation:"卖出",
         price:20.71,
@@ -192,7 +192,7 @@ var notes = [
 { 
         date:"20180226",
         time:"11:15:51",
-        id:600690,
+        id:"600690",
         name:"青岛海尔",
         operation:"卖出",
         price:20.49,
@@ -202,7 +202,7 @@ var notes = [
 { 
         date:"20180226",
         time:"11:21:53",
-        id:600050,
+        id:"600050",
         name:"中国联通",
         operation:"买入",
         price:6.46,
@@ -212,7 +212,7 @@ var notes = [
 { 
         date:"20180227",
         time:"10:47:56",
-        id:600050,
+        id:"600050",
         name:"中国联通",
         operation:"卖出",
         price:6.48,
@@ -222,7 +222,7 @@ var notes = [
 { 
         date:"20180227",
         time:"10:50:57",
-        id:600690,
+        id:"600690",
         name:"青岛海尔",
         operation:"买入",
         price:19.8,
@@ -232,7 +232,7 @@ var notes = [
 { 
         date:"20180308",
         time:"14:49:17",
-        id:600690,
+        id:"600690",
         name:"青岛海尔",
         operation:"卖出",
         price:20.4,
@@ -242,7 +242,7 @@ var notes = [
 { 
         date:"20180312",
         time:"10:35:44",
-        id:600029,
+        id:"600029",
         name:"南方航空",
         operation:"买入",
         price:11.56,
@@ -252,7 +252,7 @@ var notes = [
 { 
         date:"20180313",
         time:"14:45:50",
-        id:600029,
+        id:"600029",
         name:"南方航空",
         operation:"卖出",
         price:11.62,
@@ -262,7 +262,7 @@ var notes = [
 { 
         date:"20180319",
         time:"14:49:31",
-        id:600029,
+        id:"600029",
         name:"南方航空",
         operation:"买入",
         price:10.98,
@@ -272,7 +272,7 @@ var notes = [
 { 
         date:"20180323",
         time:"11:10:35",
-        id:600598,
+        id:"600598",
         name:"北大荒",
         operation:"买入",
         price:12.11,
@@ -282,7 +282,7 @@ var notes = [
 { 
         date:"20180404",
         time:"14:24:03",
-        id:600598,
+        id:"600598",
         name:"北大荒",
         operation:"卖出",
         price:12.74,

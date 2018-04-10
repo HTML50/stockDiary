@@ -1,45 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
-#notes{
-    display: flex;
+#notes {
+    display: none;
     align-items: center;
+    margin-top: 10px;
 }
 
-.background{
-    display: block;
-    width: 200px;
-    /* height: 200px; */
+.background {
     position: absolute;
-    opacity: 0.5;
+    opacity: 0.3;
     left: 0;
     right: 0;
-    /* top: 0; */
-    margin: auto;
-    /* bottom: 0; */
     text-align: center;
     font-size: 60px;
-    z-index: -1;
-    color: #5f5f5f;
+    color: #000;
+    pointer-events: none;
 }
 
+.tableContainer {
+    width: 100%;
+    display: flex;
+}
 
-.table{
+.table {
     width: 50%;
-    height: 200px;
-    padding: 30px;
+    min-height: 230px;
+    display: flex;
+    padding: 20px 0;
 }
 
 
-.buyTable{
+.buyTable {
     background: #00800059;
-    margin-right: 3px;
 }
 
 
-.sellTable{
-        background: #ff00003d;
+.sellTable {
+    background: #ff00003d;
 }
+
+#sellTime:before,
+#buyTime:before,
+#buyPrice:before,
+#sellPrice:before,
+#buyAmount:before,
+#sellAmount:before {
+    font-weight: 900;
+}
+
+#sellTime:before {
+    content: '卖出时间： ';
+}
+
+#buyTime:before {
+    content: '买入时间： ';
+}
+
+#sellPrice:before,
+#buyPrice:before {
+    content: '交易价格： ';
+}
+
+#buyAmount:before {
+    content: '买入数量： ';
+}
+
+#sellAmount:before {
+    content: '卖出数量： ';
+}
+
+.memo {
+    position: relative;
+    margin-top: 10px;
+}
+
+.memo::before,
+.memo::after {
+    font-size: 27px;
+    font-weight: bold;
+    color: #464646;
+}
+
+.memo::before {
+    content: "\201C";
+}
+
+.memo::after {
+    content: "\201D";
+}
+
+.container {
+    margin: auto;
+    width: 50%;
+}
+
+
+
+.render{
+    text-align: right;
+    margin: 20px;
+}
+
+
 #new {
     position: fixed;
     right: 20px;
@@ -62,7 +125,7 @@
     cursor: pointer;
 }
 
-#mask{
+#mask {
     display: none;
     position: fixed;
     width: 100%;
@@ -70,7 +133,7 @@
     background: rgba(255, 255, 255, 0.9);
 }
 
-form#input{
+form#input {
     width: 50%;
     height: 50%;
     box-shadow: 1px 7px 20px -8px #000;
@@ -79,7 +142,7 @@ form#input{
     padding: 30px;
 }
 
-.ab-center{
+.ab-center {
     margin: auto;
     position: absolute;
     left: 0;
@@ -88,7 +151,7 @@ form#input{
     bottom: 0;
 }
 
-#closeBtn{
+#closeBtn {
     position: absolute;
     right: -15px;
     top: -15px;
@@ -113,56 +176,66 @@ form#input{
 
 <body>
     <canvas id="canvas" width="100" height="30"></canvas>
-    <div class="render">
-        <p>净收益： <span id="total"></span>元</p>
-        <p>平均每次操作收益： <span id="avg"></span>元</p>
-    </div>
     <div id='new'>+</div>
     <div id="notes">
-
         <div class="background">
-            <div id="id">600690</div>
-            <div id="name">北大荒</div>
+            <div id="id"></div>
+            <div id="name"></div>
         </div>
-
-
-        <div class="table buyTable">
-          <div id="buyTime">20180404 14:24:03</div>      
-          <div class="buyPrice"><div id="buyPrice">12.74</div><div id="buyAmount">1000</div></div>
-         <div id="buyMemo">突然中美贸易摩擦，全线崩盘。但农业、黄金表现抢眼，于是追高杀入
-</div>
+        <div class="tableContainer">
+            <div class="table buyTable">
+                <div class="container">
+                    <div id="buyTime"></div>
+                    <div class="buyPrice"><span id="buyPrice"></span> <span id="buyAmount"></span></div>
+                    <div id="buyMemo" class="memo"></div>
+                </div>
+            </div>
+            <div class="table sellTable">
+                <div class="container">
+                    <div id="sellTime"></div>
+                    <div class="sellPrice"><span id="sellPrice"></span> <span id="sellAmount"></span></div>
+                    <div id="sellMemo" class="memo"></div>
+                </div>
+            </div>
         </div>
-
-
-        <div class="table sellTable">
-          <div id="sellTime">20180404 14:24:03</div>      
-          <div class="sellPrice"><div id="sellPrice">12.74</div><div id="sellAmount">1000</div></div>
-         <div id="sellMemo">买入当天就被套了。研究了一下企业基本面，不太乐观。想着解套就出手。今天观察，发现主力操盘痕迹明显，就拿到涨停出的。虽然今天贸易摩擦又升级了，但是对这个企业不看好，就不再持有了。</div>
+    </div>
+    <div class="render">
+        <div>平均收益： <span id="avg"></span>元</div>
+        <div>总收益： <span id="total"></span>元</div>
     </div>
     <div id="mask" class="ab-center">
         <form id="input" class="ab-center">
-        <div id="closeBtn">❌</div>
-        <p>
-        <label>日期：</label><input type="text" id="date" name="date" required>
-        <label>时间：</label><input type="text" id="newTime" name="time" required>
-        </p>
-        <p>
-        <label>代码：</label><input type="number" id="stockID" name="stockID" required>
-        <label>名称：</label><input type="text" id="stockName" name="name" required>
-        </p>
-        <p>
-        <label>数量：</label><input type="number" step="100" id="stockAmount" name="amount" required>
-        <label>价格：</label><input type="number" name="price" step="0.01" required>
-        </p>
-        <p><label>操作：</label>
-        <select type="text" name="operation" required>
-            <option >卖出</option>
-            <option>买入</option>
-        </select></p>
-        <p><div>
-            <textarea name="memo" required></textarea>
-        </div>
-        <button type="submit">提交</button>
+            <div id="closeBtn">❌</div>
+            <p>
+                <label>日期：</label>
+                <input type="text" id="date" name="date" required>
+                <label>时间：</label>
+                <input type="text" id="newTime" name="time" required>
+            </p>
+            <p>
+                <label>代码：</label>
+                <input type="number" id="stockID" name="stockID" required>
+                <label>名称：</label>
+                <input type="text" id="stockName" name="name" required>
+            </p>
+            <p>
+                <label>数量：</label>
+                <input type="number" step="100" id="stockAmount" name="amount" required>
+                <label>价格：</label>
+                <input type="number" name="price" step="0.01" required>
+            </p>
+            <p>
+                <label>操作：</label>
+                <select type="text" name="operation" required>
+                    <option>卖出</option>
+                    <option>买入</option>
+                </select>
+            </p>
+            <p>
+                <div>
+                    <textarea name="memo" required></textarea>
+                </div>
+                <button type="submit">提交</button>
         </form>
     </div>
     <script src="./temp/data"></script>
@@ -196,27 +269,34 @@ form#input{
     };
 
 
-    //显示Memo
-    function showMemo(index){
-        if(document.getElementById('notes').style.display === '')
-            document.getElementById('notes').style.display = 'block'
+    //显示买卖信息
+    //算法是有问题的，比如多次分批买入同一账号，就显示错误了。
+    function showMemo(index) {
+        if (document.getElementById('notes').style.display === '')
+            document.getElementById('notes').style.display = 'flex'
 
 
-          //notes是temp/notes文件中定义的数组
-        for(let i in notes){
-           if(timeline[index] === notes[i].date && notes[i].operation==='卖出'){
-                
-                memo.innerHTML = notes[i].memo;
-                time.innerHTML = notes[i].date +" "+notes[i].time;
+        //notes是temp/notes文件中定义的数组
+        for (let i in notes) {
+
+            //遍历找到当前日期卖出的信息
+            if (timeline[index] === notes[i].date && notes[i].operation === '卖出') {
+
+                sellMemo.innerHTML = notes[i].memo;
+                sellTime.innerHTML = notes[i].date.replace(/(\d{4})(\d{2})(\d{2})/,'$1年$2月$3日') + " " + notes[i].time;
                 document.getElementById('id').innerHTML = notes[i].id;
                 document.getElementById('name').innerHTML = notes[i].name;
-                document.getElementById('price').innerHTML = "价格: "+notes[i].price;
-                amount.innerHTML = "数量: "+notes[i].amount;
+                sellPrice.innerHTML = notes[i].price;
+                sellAmount.innerHTML = notes[i].amount;
 
-                for(let j=i;j>0;j--){
-                    if(notes[j].id === notes[i].id && notes[j].operation==='买入'){
-                         buyMemo.innerHTML = notes[j].memo;
-                         return;
+                for (let j = i; j => 0; j--) {
+                    if (notes[j].id === notes[i].id && notes[j].operation === '买入') {
+                        buyMemo.innerHTML = notes[j].memo;
+                        buyTime.innerHTML = notes[j].date.replace(/(\d{4})(\d{2})(\d{2})/,'$1年$2月$3日') + " " + notes[j].time;
+                        buyPrice.innerHTML = notes[j].price;
+                        buyAmount.innerHTML = notes[j].amount;
+                        return
+                        //return 退出遍历，不然会遍历j到-1
                     }
                 }
 
@@ -226,10 +306,10 @@ form#input{
 
 
     //根据代码查询股票名称
-    stockID.oninput = function(){
-        if(stockID.value.length === 6){
-           let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://127.0.0.1:8080/?id='+stockID.value);
+    stockID.oninput = function() {
+        if (stockID.value.length === 6) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://127.0.0.1:8080/?id=' + stockID.value);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     stockName.value = xhr.response;
@@ -251,15 +331,12 @@ form#input{
             data: barChartData,
             options: {
                 responsive: true,
-                title: {
-                    display: true,
-                    text: '操作损益表'
-                }
+               
             }
         });
 
         //监听图形单击，显示操作记录
-        canvas.onclick = function(e){
+        canvas.onclick = function(e) {
             var item = myChart.getElementAtEvent(e)[0];
 
             if (item) {
@@ -270,33 +347,33 @@ form#input{
 
         //新建记录
         document.getElementById('new').onclick = function() {
-            mask.style.display= 'block';
+            mask.style.display = 'block';
 
             var now = new Date();
 
 
 
-            var month = now.getMonth()<9 ? '0'+(now.getMonth()+1):(now.getMonth()+1),
-            day = now.getDate()<10?'0'+now.getDate():now.getDate(),
-            hour = now.getHours()<10?'0'+now.getHours():now.getHours(),
-            min = now.getMinutes()<10?'0'+now.getMinutes():now.getMinutes(),
-            sec = now.getSeconds()<10?'0'+now.getSeconds():now.getSeconds(),
-            dateStr = ''+now.getFullYear()+month+day,
-            timeStr = hour+':'+min+':'+sec;
+            var month = now.getMonth() < 9 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1),
+                day = now.getDate() < 10 ? '0' + now.getDate() : now.getDate(),
+                hour = now.getHours() < 10 ? '0' + now.getHours() : now.getHours(),
+                min = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes(),
+                sec = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds(),
+                dateStr = '' + now.getFullYear() + month + day,
+                timeStr = hour + ':' + min + ':' + sec;
 
             date.value = dateStr;
             newTime.value = timeStr;
 
 
             mask.onclick = function() {
-                mask.style.display= 'none';
+                mask.style.display = 'none';
             }
             closeBtn.onclick = function() {
-                mask.style.display= 'none';
-            }            
+                mask.style.display = 'none';
+            }
 
 
-            input.onclick = function(e){
+            input.onclick = function(e) {
                 e.stopPropagation();
             }
         }
@@ -307,7 +384,7 @@ form#input{
         document.getElementById("avg").innerHTML = avg;
 
 
-        if(location.port !== '8080'){
+        if (location.port !== '8080') {
             document.getElementById('new').style.display = 'none';
         }
     };
