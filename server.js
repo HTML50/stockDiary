@@ -76,7 +76,7 @@ http.createServer(function(req, res) {
                 //卖出了部分股票
                 holdings[id] = {
                     amount: holdings[id].amount - params.query.amount,
-                    value: -(params.query.amount * params.query.price - holdings[id].value/holdings[id].amount*params.query.amount)
+                    value: -Math.round(params.query.amount * params.query.price - holdings[id].value/holdings[id].amount*params.query.amount)
                 }
             }
 
